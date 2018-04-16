@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+		android:id="@+id/g1">
+		<item
+			android:id="@+id/menu_home"
+			android:title="首页"
+			android:icon="@drawable/ic_home"/>
+    </group>
+	<item
+		android:id="@+id/menu_rule"
+		android:title="规则"/>
+	<item
+		android:id="@+id/menu_log"
+		android:title="日志"
+		android:icon="@drawable/ic_info"/>
+	<item
+		android:id="@+id/menu_setting"
+		android:title="设置"
+		android:icon="@drawable/ic_setting"/>
+</menu>

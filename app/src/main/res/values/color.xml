@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="mdblack">#89000000</color>
+	<color name="mdblack_f">#42000000</color>
+	<color name="night">#ff222222</color>
+	<color name="mdwhite">#ffffffff</color>
+	<color name="mdwhite_f">#4cffffff</color>
+	<color name="colorPrimary">#FF8BC34A</color>
+	<color name="colorPrimaryDark">#FF8BC34A</color>
+	<color name="LightBlue">#ff2196f3</color>
+	<color name="LightBlueDark">#ff1976c3</color>
+	
+	<color name="primary">#2196F3</color>
+	<color name="primary_dark">#1976D2</color>
+	<color name="primary_light">#BBDEFB</color>
+	<color name="accent">#03A9F4</color>
+	<color name="primary_text">#212121</color>
+	<color name="secondary_text">#757575</color>
+	<color name="divider">#BDBDBD</color>
+</resources>

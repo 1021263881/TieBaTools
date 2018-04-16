@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">吧务助手</string>
+    <string name="login">百度账号登录</string>
+	<string name="open">打开</string>
+	<string name="close">关闭</string>
+	<string name="welcomemess">欢迎使用吧务助手，\n建议您在使用前先详细阅读使用帮助</string>
+	<string name="updatemess"></string>
+</resources>
