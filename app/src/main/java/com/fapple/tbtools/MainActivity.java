@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity
 
 	//规则界面
 	private View ruleView = null;
+	private LinearLayout ruleContentView = null;
 	private OnClickListener ruleClickListen = null;
 
 	//LogView
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity
 		initToolBar();
 		initNavigationView();
 		initInternetLitsen();
-		
+
 		sendNotification(102, "APP已启动", "上次关闭时间:" + Tool.currentToStrTime(Long.valueOf(lastTime)));
 
 		//tbScan = new TBScan(api, rule){};
@@ -337,7 +338,7 @@ public class MainActivity extends AppCompatActivity
 						mainContentLayout.removeAllViews();
 						fab.hide();
 						currentMenuItemID = p1.getItemId();
-						switch (p1.getItemId()) {
+						switch (currentMenuItemID) {
 							case R.id.menu_home:
 								fab.setOnClickListener(null);
 								mainContentLayout.addView(getHomeView());
@@ -368,21 +369,22 @@ public class MainActivity extends AppCompatActivity
 		navigation.getMenu().getItem(0).setChecked(true);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	private void addNewRule(String name, boolean check, JSONArray rule){
+
+
+
+
+
+
+
+	private void addNewRule(String name, boolean check, JSONArray rule)
+	{
 		try {
-			rule.put((new JSONObject().put("name", name).put("check", check).put("rule" ,rule).put("matchTimes", new Integer(0))));
+			rule.put((new JSONObject().put("name", name).put("check", check).put("rule" , rule).put("matchTimes", new Integer(0))));
 		} catch (JSONException e) {
-			
+			showAlertDialog("add-Exception=" + e.toString());
 		}
 	}
-	
+
 	private View getHomeView()
 	{
 		if (homeView == null) {
@@ -398,6 +400,11 @@ public class MainActivity extends AppCompatActivity
 	{
 		if (ruleView == null) {
 			ruleView = View.inflate(this, R.layout.ruleview, null);
+			ruleContentView = (LinearLayout) ruleView.findViewById(R.id.ruleviewContent);
+		}
+		if (rule.length() - 1 != ruleContentView.getChildCount()) {
+			ruleContentView.removeAllViews();
+			b
 		}
 		return ruleView;
 	}
