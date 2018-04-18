@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<Button
+		android:layout_height="48dp"
+		android:layout_width="108dp"
+		android:text="文本内容"
+		android:layout_centerHorizontal="true"
+		android:textColor="@color/mdblack"
+		android:id="@+id/ruleaddtypeContent"
+		android:layout_margin="3dp"/>
+
+	<Button
+		android:layout_height="48dp"
+		android:layout_width="108dp"
+		android:text="楼层数"
+		android:layout_centerHorizontal="true"
+		android:textColor="@color/mdblack"
+		android:id="@+id/ruleaddtypeFloor"
+		android:layout_margin="3dp"
+		android:layout_below="@id/ruleaddtypeContent"/>
+
+	<Button
+		android:layout_height="48dp"
+		android:layout_width="108dp"
+		android:text="发帖时间"
+		android:layout_centerHorizontal="true"
+		android:textColor="@color/mdblack"
+		android:id="@+id/ruleaddtypeCTime"
+		android:layout_margin="3dp"
+		android:layout_below="@id/ruleaddtypeFloor"/>
+
+	<Button
+		android:layout_height="48dp"
+		android:layout_width="108dp"
+		android:text="规则运行时间"
+		android:layout_centerHorizontal="true"
+		android:textColor="@color/mdblack"
+		android:id="@+id/ruleaddtypeRunTime"
+		android:layout_margin="3dp"
+		android:layout_below="@id/ruleaddtypeCTime"/>
+
+</RelativeLayout>
+

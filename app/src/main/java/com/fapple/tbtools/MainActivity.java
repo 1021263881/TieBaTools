@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity
 			showWelcomeMess();
 			rule = new JSONArray();
 			scanRule = new JSONObject();
+			lastTime = "0";
 			try {
 				scanRule.put("scanThread", scanThread);
 				scanRule.put("scanLzl", scanLzl);
@@ -245,6 +246,7 @@ public class MainActivity extends AppCompatActivity
 	{
 		JSONObject setting = new JSONObject();
 		try {
+			lastTime = String.valueOf(System.currentTimeMillis());
 			setting.put("version", version);
 			setting.put("rule", rule);
 			setting.put("lastTime", lastTime);
@@ -404,7 +406,7 @@ public class MainActivity extends AppCompatActivity
 		}
 		if (rule.length() - 1 != ruleContentView.getChildCount()) {
 			ruleContentView.removeAllViews();
-			b
+			
 		}
 		return ruleView;
 	}
