@@ -5,7 +5,7 @@ import android.database.*;
 import android.database.sqlite.*;
 import java.util.*;
 
-public class DataBase
+public abstract class DataBase
 {
 	private DataBaseHelper databasehelper;
 	private SQLiteDatabase database;
@@ -13,6 +13,8 @@ public class DataBase
 	private String sql = "";
 	private String log = "";
 	private int level = -1;
+
+	public abstract void addLogCallBack(String content);
 
 	public DataBase(Context main, String DATABASENAME)
 	{
@@ -30,7 +32,8 @@ public class DataBase
 		database = databasehelper.getWritableDatabase();
 		return database;
 	}
-	public void setTransactionSuccessful(){
+	public void setTransactionSuccessful()
+	{
 		if (database != null && database.isOpen() && !database.isReadOnly()) {
 			database.setTransactionSuccessful();
 		}
@@ -84,7 +87,8 @@ public class DataBase
 		}
 		return log;
 	}
-	public int getUidLevel(String uid){
+	public int getUidLevel(String uid)
+	{
 		level = -1;
 		Cursor c = database.rawQuery("select * from user where uid = '" + uid + "'", null);
 		if (c.moveToFirst()) {//判断游标是否为空
@@ -100,6 +104,9 @@ public class DataBase
 			//database.beginTransaction();
 			sql = "insert into log(time, type, content) values ('" + System.currentTimeMillis() + "', '" + type + "', '" + content + "')";//插入操作的SQL语句
 			database.execSQL(sql);//执行SQL语句
+			if (sql.length() > 50) {
+				addLogCallBack(sql.substring(46, sql.length() - 2).replace("', '", ""));
+			}
 			//database.setTransactionSuccessful();
 			//database.endTransaction();
 		}

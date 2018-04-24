@@ -142,19 +142,22 @@ public class TBAPI
 		 data += "&tbs=" + gettbs();
 		 */
 
-		url += "c/u/user/profile";
+		//url += "c/u/user/profile";
 
 		//url += "c/u/user/getuserinfo";
-		//data += "BDUSS=" + BDUSS;
+		url += "c/f/frs/getmypost";
+		data += "BDUSS=" + BDUSS;
 		data += "&_client_type=2";
 		data += "&_client_version=6.6.6";
 		data += "&_client_id=" + getStamp();
-		data += "&uid=580978555";
+		data += "&q_type=1";
+		//data += "&uid=580978555";
 		//data += "&name=1021263881";
 		data += "&from=baidu_appstore";
 		data += "&_phone_imei=" + DEFAULE_IMEI;
 		data += "&model=GT-I9100";
 		data += "&timestamp=" + getTimeStamp();//1521548973986
+		data += "&tbs=" + getTbs(BDUSS);
 		data += "&sign=" + getSign(data);
 
 		String thing = httpService.post(url, data);

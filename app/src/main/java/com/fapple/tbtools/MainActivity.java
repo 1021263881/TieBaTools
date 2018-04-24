@@ -2,7 +2,6 @@ package com.fapple.tbtools;
 
 import android.app.*;
 import android.content.*;
-import android.graphics.*;
 import android.graphics.drawable.*;
 import android.net.*;
 import android.os.*;
@@ -16,13 +15,12 @@ import android.view.*;
 import android.view.View.*;
 import android.widget.*;
 import com.fapple.tools.*;
+import java.util.*;
 import org.json.*;
 
 import android.content.ClipboardManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import java.util.*;
-import android.widget.GridLayout.*;
 
 public class MainActivity extends AppCompatActivity 
 {
@@ -87,12 +85,35 @@ public class MainActivity extends AppCompatActivity
 	private LinearLayout ruleContentView = null;
 	private OnClickListener ruleClickListen = null;
 
+	//添加规则界面
+
+	private String[] rangeStrings = {"大于或等于[≥]", "小于或等于[≤]"};
+	private ArrayAdapter<String> rangeAdapter = null;
+
 	//LogView
 	private View logView = null;
 	private TextView log = null;
 	private OnClickListener logClickListen = null;
 
-	private DataBase db = new DataBase(this, DATABASENAME);
+	private DataBase db = new DataBase(this, DATABASENAME){
+
+		@Override
+		public void addLogCallBack(final String content)
+		{
+			runOnUiThread(new Runnable(){
+					@Override
+					public void run()
+					{
+						if (currentMenuItemID == R.id.menu_log && log != null) {
+							log.append("\n" + content);
+							if (log.getLineCount() * log.getLineHeight() > log.getHeight()) {
+								log.scrollTo(0, log.getLineCount() * log.getLineHeight() - log.getHeight());
+							}
+						}
+					}
+				});
+		}
+	};
 
 	BroadcastReceiver networkChangeReceiver = new NetworkChangeReceiver();
 
@@ -157,6 +178,9 @@ public class MainActivity extends AppCompatActivity
 			}
 		};
 
+		//建立适配器
+		rangeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rangeStrings);
+
 		db.getWritableDatabase();
 
 		initSetting();
@@ -170,13 +194,13 @@ public class MainActivity extends AppCompatActivity
 
 		addLog(0, "APP启动");
 		//db.clearLog();
-		//BDUSS = db.getBDUSS("580978555");
+		BDUSS = db.getBDUSS("580978555");
 		try {
 			//api.sendLoginMess(BDUSS);
 			//showAlertDialog(db.getLog());
 			//showAlertDialog(db.getBDUSS());
 			//showAlertDialog(api.deltz(BDUSS, 0, "我的世界", "5643840652"));
-			//showAlertDialog("Res=" + api.send(BDUSS));
+			showAlertDialog("Res=" + api.send(BDUSS));
 			if (false) {
 				uid = Zhengze.ZZ(api.sendLoginMess(""), "id\":\"\\d*?\"", false, 0);
 				uid = uid.substring(5, uid.length() - 1);
@@ -358,6 +382,12 @@ public class MainActivity extends AppCompatActivity
 								fab.show();
 								break;
 							case R.id.menu_setting:
+								
+								mainContentLayout.addView(View.inflate(MainActivity.this, R.layout.rule_add_ctime, null));
+								((Spinner)findViewById(R.id.ruleaddSpinner)).setAdapter(rangeAdapter);
+								break;
+							case R.id.menu_exit:
+								finish();
 								break;
 						}
 						p1.setChecked(true);
@@ -378,14 +408,91 @@ public class MainActivity extends AppCompatActivity
 
 
 
+
+
+
+
 	private void addNewRule(String name, boolean check, JSONArray rule)
 	{
 		try {
-			rule.put((new JSONObject().put("name", name).put("check", check).put("rule" , rule).put("matchTimes", new Integer(0))));
+			this.rule.put(new JSONObject()
+						  .put("index", this.rule.length())
+						  .put("name", name)
+						  .put("check", check)
+						  .put("using", true)
+						  .put("rule" , rule)
+						  .put("matchTimes", new Integer(0))
+						  );
 		} catch (JSONException e) {
 			showAlertDialog("add-Exception=" + e.toString());
 		}
 	}
+
+	private void addRuleFloor(final int ruleIndex)
+	{
+		final View addFloor = View.inflate(this, R.layout.rule_add_floor, null);
+		((Spinner)addFloor.findViewById(R.id.ruleaddSpinner)).setAdapter(rangeAdapter);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		dialog.setTitle("设置楼层规则");
+		dialog.setIcon(R.drawable.ic_add_);
+		dialog.setPositiveButton("确定", new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface p1, int p2)
+				{
+					if (((Spinner)addFloor.findViewById(R.id.ruleaddSpinner)).getSelectedItemPosition() == 0) {
+						addRuleFloor(ruleIndex, Integer.valueOf(((TextInputEditText)addFloor.findViewById(R.id.ruleaddfloorEditText)).getText().toString().equals("") ?"0": ((TextInputEditText)addFloor.findViewById(R.id.ruleaddfloorEditText)).getText().toString()));
+					} else {
+						addRuleFloor(ruleIndex, -Integer.valueOf(((TextInputEditText)addFloor.findViewById(R.id.ruleaddfloorEditText)).getText().toString().equals("") ?"0": ((TextInputEditText)addFloor.findViewById(R.id.ruleaddfloorEditText)).getText().toString()));
+					}
+				}
+			});
+		dialog.setNegativeButton("取消", null);
+		dialog.setCancelable(false);
+		dialog.setView(addFloor);
+		dialog.show();
+	}
+	private void addRuleFloor(int ruleIndex, int floor)
+	{
+		Toast.makeText(this, "添加楼层规则， index=" + ruleIndex + ", floor=" + floor, 0).show();
+		if (floor > 0) {
+			try {
+				rule.optJSONObject(ruleIndex)
+					.optJSONArray("rule")
+					.put(new JSONObject()
+						 .put("type", TBScan.ruleFloorL)
+						 .put("content", Math.abs(floor))
+						 );
+			} catch (JSONException e) {
+
+			}
+		} else if (floor < 0) {
+			try {
+				rule.optJSONObject(ruleIndex)
+					.optJSONArray("rule")
+					.put(new JSONObject()
+						 .put("type", TBScan.ruleFloorS)
+						 .put("content", Math.abs(floor))
+						 );
+			} catch (JSONException e) {
+
+			}
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	private View getHomeView()
 	{
@@ -406,7 +513,7 @@ public class MainActivity extends AppCompatActivity
 		}
 		if (rule.length() - 1 != ruleContentView.getChildCount()) {
 			ruleContentView.removeAllViews();
-			
+
 		}
 		return ruleView;
 	}
@@ -419,6 +526,13 @@ public class MainActivity extends AppCompatActivity
 		log.setText(db.getLog());
 		return logView;
 	}
+	private View getSettingView()
+	{
+		return null;
+	}
+
+
+
 	private void showWelcomeMess()
 	{
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -604,12 +718,13 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	protected void onDestroy()
 	{
-		addLog(0, "APP被关闭");
-		db.setTransactionSuccessful();
+		//addLog(0, "APP被关闭");
+		//db.setTransactionSuccessful();
 		//db.closeDatabase();
 		unregisterReceiver(networkChangeReceiver);
 		saveSetting();
-		super.onDestroy();
+		Toast.makeText(this, "onDestory", 1).show();
+		//super.onDestroy();
 	}
 
 	class NetworkChangeReceiver extends BroadcastReceiver

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:gravity="center">
+
+	<Spinner
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:id="@+id/ruleaddSpinner"/>
+
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:id="@+id/ruleaddctimeDateRelativeLayout"
+		android:visibility="invisible">
+
+		<DatePicker
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:id="@+id/ruleaddctimeDatePicker"
+			android:layout_centerHorizontal="true"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="取消"
+			android:id="@+id/ruleaddctimeCancelButton"
+			android:layout_below="@id/ruleaddctimeDatePicker"
+			android:layout_marginLeft="16dp"
+			android:layout_alignParentLeft="true"
+			android:layout_marginRight="16dp"
+			android:background="#FFFFFF"
+			android:textColor="@color/accent"
+			android:layout_margin="3dp"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="下一步"
+			android:id="@+id/ruleaddctimeNextButton"
+			android:layout_below="@id/ruleaddctimeDatePicker"
+			android:layout_marginLeft="16dp"
+			android:layout_marginRight="16dp"
+			android:layout_alignParentRight="true"
+			android:background="#FFFFFF"
+			android:textColor="@color/accent"
+			android:layout_margin="3dp"/>
+
+	</RelativeLayout>
+
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:id="@+id/ruleaddctimeTimeRelativeLayout"
+		android:visibility="visible">
+
+		<TimePicker
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:id="@+id/ruleaddctimeTimePicker"
+			android:layout_centerHorizontal="true"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="上一步"
+			android:id="@+id/ruleaddctimeLastButton"
+			android:layout_below="@id/ruleaddctimeTimePicker"
+			android:layout_marginLeft="16dp"
+			android:layout_marginRight="16dp"
+			android:layout_alignParentLeft="true"
+			android:background="#FFFFFF"
+			android:textColor="@color/accent"
+			android:layout_margin="3dp"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="确定"
+			android:id="@+id/ruleaddctimeSubmitButton"
+			android:layout_below="@id/ruleaddctimeTimePicker"
+			android:layout_marginLeft="16dp"
+			android:layout_marginRight="16dp"
+			android:layout_alignParentRight="true"
+			android:background="#FFFFFF"
+			android:textColor="@color/accent"
+			android:layout_margin="3dp"/>
+
+	</RelativeLayout>
+
+</LinearLayout>
+

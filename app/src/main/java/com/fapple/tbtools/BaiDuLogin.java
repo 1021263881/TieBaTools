@@ -10,7 +10,7 @@ public class BaiDuLogin extends Activity
 {
 	private WebView web;
 	private final static String BaiDuLoginUrl = "https://wappass.baidu.com/passport/login?u=//tieba.baidu.com";
-	private final static String duibi = "u=//tieba.baidu.com";
+	private final static String duibi = "u=(/|%(25){0,}?2F)\\1tieba.baidu.com";
 	private String cookie = "";
 	private Intent result = new Intent();
 	
@@ -50,7 +50,7 @@ public class BaiDuLogin extends Activity
 		public void onPageFinished(WebView view, String url)
 		{
 			//Toast.makeText(BaiDuLogin.this, url, 0).show();
-			if (!Zhengze.ZZ(url, duibi, false, 0).equals(duibi)) {
+			if (Zhengze.ZZ(url, duibi, false, 0).equals("")) {
 				CookieManager cookieManager = CookieManager.getInstance();
 				String CookieStr = cookieManager.getCookie("http://tieba.baidu.com");
 				if (CookieStr != null) {

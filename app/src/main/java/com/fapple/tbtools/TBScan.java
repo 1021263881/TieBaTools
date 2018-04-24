@@ -47,14 +47,14 @@ public abstract class TBScan
 	public static final String ruleUserLevelL = "23+";//用户等级≥条件等级
 	public static final String ruleUserLevelS = "23-";//用户等级≤条件等级
 	public static final String ruleContent = "3";
-	public static final String ruleFloorL = "4+";
-	public static final String ruleFloorS = "4-";
-	public static final String ruleTimeL = "5+";
-	public static final String ruleTimeS = "5-";
-	public static final String ruleMatchTimesL = "6+";
-	public static final String ruleMatchTimesS = "6-";
-	public static final String ruleRunTimeL = "7+";
-	public static final String ruleRunTimeS = "7-";
+	public static final String ruleFloorL = "4+";//用户等级≥条件等级
+	public static final String ruleFloorS = "4-";//用户等级≥条件等级
+	public static final String ruleTimeL = "5+";//用户等级≥条件等级
+	public static final String ruleTimeS = "5-";//用户等级≥条件等级
+	public static final String ruleMatchTimesL = "6+";//用户等级≥条件等级
+	public static final String ruleMatchTimesS = "6-";//用户等级≥条件等级
+	public static final String ruleRunTimeL = "7+";//用户等级≥条件等级
+	public static final String ruleRunTimeS = "7-";//用户等级≥条件等级
 
 	private static final String type_content = "0";
 	private static final String type_url = "1";
