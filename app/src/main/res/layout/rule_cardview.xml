@@ -1,35 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/ruleCard"
+	android:id="@+id/switchCard"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:layout_margin="16dp"
-	android:foreground="?android:attr/selectableItemBackgroundBorderless">
+	android:layout_margin="6dp">
 
 	<RelativeLayout
-		android:layout_height="match_parent"
-		android:layout_width="match_parent"
-		android:orientation="horizontal"
-		android:padding="10dp">
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:padding="3dp">
 
 		<Switch
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:id="@+id/ruleSwitch1"
-			android:layout_centerVertical="true"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="12dp"/>
+			android:id="@+id/ruleSwitch"
+			android:layout_marginRight="3dp"
+			android:layout_alignParentLeft="true"
+			android:layout_marginTop="24dp"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:text="规则名"
+			android:layout_margin="6dp"
+			android:textSize="18sp"
+			android:textColor="@color/mdblack_f"
+			android:id="@+id/ruleNameText"
+			android:layout_alignParentTop="true"
+			android:layout_toRightOf="@id/ruleSwitch"
+			android:layout_marginBottom="3dp"
+			android:layout_marginTop="0dp"/>
 
 		<TextView
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:text="删帖姬"
-			android:layout_alignBaseline="@id/homeviewSwitch1"
-			android:layout_centerVertical="true"
-			android:layout_marginLeft="24dp"
-			android:textSize="22sp"
-			android:textColor="@color/mdblack_f"/>
+			android:text="需确认"
+			android:layout_below="@id/ruleNameText"
+			android:layout_toRightOf="@id/ruleSwitch"
+			android:layout_marginTop="0dp"
+			android:id="@+id/ruleNeedCheckText"
+			android:textSize="16sp"
+			android:layout_marginBottom="0dp"
+			android:layout_marginLeft="6dp"
+			android:layout_marginRight="3dp"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="触发次数:"
+			android:layout_marginTop="0dp"
+			android:layout_below="@id/ruleNameText"
+			android:layout_toRightOf="@id/ruleNeedCheckText"
+			android:id="@+id/rulecardviewTextView"
+			android:textSize="16sp"
+			android:layout_marginRight="3dp"
+			android:layout_marginBottom="0dp"
+			android:layout_marginLeft="3dp"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_marginTop="0dp"
+			android:layout_toRightOf="@id/rulecardviewTextView"
+			android:layout_below="@id/ruleNameText"
+			android:id="@+id/ruleMatchTimesText"
+			android:textSize="16sp"
+			android:layout_alignRight="@id/ruleNameText"
+			android:layout_marginLeft="3dp"
+			android:lines="1"
+			android:text="0"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_below="@id/ruleNeedCheckText"
+			android:id="@+id/ruleDealText"
+			android:layout_alignLeft="@id/ruleNameText"
+			android:layout_marginTop="3dp"
+			android:textSize="16sp"
+			android:layout_alignRight="@id/ruleNameText"
+			android:text="不处理"/>
+
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="vertical"
+			android:layout_marginTop="3dp"
+			android:layout_below="@id/ruleDealText"
+			android:layout_alignLeft="@id/ruleNameText"
+			android:id="@+id/ruleCondLayout"
+			android:layout_alignRight="@id/ruleNameText"/>
+
+		<ImageButton
+			android:layout_height="36dp"
+			android:layout_width="48dp"
+			android:id="@+id/ruleAddCondButton"
+			android:layout_below="@id/ruleCondLayout"
+			android:layout_alignLeft="@id/ruleNameText"
+			android:layout_marginTop="3dp"
+			android:src="@drawable/ic_edit"/>
+
+		<ImageButton
+			android:layout_below="@id/ruleCondLayout"
+			android:layout_alignRight="@id/ruleNameText"
+			android:layout_marginLeft="0dp"
+			android:layout_height="36dp"
+			android:layout_width="48dp"
+			android:id="@+id/ruleDeleteButton"
+			android:src="@drawable/ic_delete"
+			android:layout_marginTop="3dp"/>
+
+		<RelativeLayout
+			android:layout_height="36dp"
+			android:layout_marginTop="3dp"
+			android:layout_toLeftOf="@id/ruleDeleteButton"
+			android:layout_below="@id/ruleCondLayout"
+			android:layout_toRightOf="@id/ruleAddCondButton"
+			android:layout_width="wrap_content">
+
+			<ImageButton
+				android:layout_height="36dp"
+				android:layout_width="48dp"
+				android:id="@+id/ruleEditButton"
+				android:src="@drawable/ic_add"
+				android:layout_centerHorizontal="true"/>
+
+		</RelativeLayout>
 
 	</RelativeLayout>
 

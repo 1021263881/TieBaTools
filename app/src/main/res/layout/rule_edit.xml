@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="match_parent"
+	android:layout_width="match_parent">
+
+	<android.support.design.widget.TextInputLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/ruleeditNameEditTextLayout">
+
+		<android.support.design.widget.TextInputEditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="规则名"
+			android:id="@+id/ruleeditNameEditText"/>
+
+	</android.support.design.widget.TextInputLayout>
+
+	<Spinner
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_below="@id/ruleeditNameEditTextLayout"
+		android:id="@+id/ruleeditDeleteSpinner"
+		android:elevation="10dp"
+		android:layout_centerHorizontal="true"/>
+
+	<CheckBox
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:layout_below="@id/ruleeditDeleteSpinner"
+		android:textSize="15sp"
+		android:text="是否封禁一天 (封禁请填写封禁理由)"
+		android:id="@+id/ruleeditBanCheckBox"
+		android:lines="2"/>
+
+	<android.support.design.widget.TextInputLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/ruleeditBanCheckBox"
+		android:id="@+id/ruleeditBanEditTextLayout">
+
+		<android.support.design.widget.TextInputEditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="封禁理由"
+			android:inputType="textMultiLine"
+			android:id="@+id/ruleeditBanReasonEditText"/>
+
+	</android.support.design.widget.TextInputLayout>
+
+	<CheckBox
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:layout_below="@id/ruleeditBanEditTextLayout"
+		android:textSize="15sp"
+		android:text="加入黑名单 (针对广告和爆吧ID,将匹配到的ID加入删帖黑名单,遇见即删)"
+		android:id="@+id/ruleeditAddToBlackListCheckBox"/>
+
+	<CheckBox
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:layout_below="@id/ruleeditAddToBlackListCheckBox"
+		android:textSize="15sp"
+		android:text="需要确认 (建议在新增/修改规则时打开,以免误删)"
+		android:id="@+id/ruleeditNeedCheckBox"
+		android:lines="2"/>
+
+</RelativeLayout>
+

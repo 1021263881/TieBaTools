@@ -19,7 +19,7 @@
 			<Switch
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
-				android:id="@+id/homeviewSwitch1"
+				android:id="@+id/homeviewShanTieJiSwitch"
 				android:layout_centerVertical="true"
 				android:layout_alignParentRight="true"
 				android:layout_marginRight="12dp"/>
@@ -28,7 +28,7 @@
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
 				android:text="删帖姬"
-				android:layout_alignBaseline="@id/homeviewSwitch1"
+				android:layout_alignBaseline="@id/homeviewShanTieJiSwitch"
 				android:layout_centerVertical="true"
 				android:layout_marginLeft="24dp"
 				android:textSize="22sp"
@@ -41,7 +41,7 @@
 	<TextView
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
-		android:text="测试版本"
+		android:text="测试2"
 		android:layout_centerInParent="true"
 		android:textSize="22sp"
 		android:textColor="@color/mdblack_f"/>

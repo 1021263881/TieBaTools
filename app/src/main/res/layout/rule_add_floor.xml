@@ -4,12 +4,13 @@
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
-	android:gravity="center">
+	android:gravity="center|center_horizontal">
 
 	<Spinner
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
-		android:id="@+id/ruleaddSpinner"/>
+		android:id="@+id/ruleaddSpinner"
+		android:elevation="10dp"/>
 
 	<android.support.design.widget.TextInputLayout
 		android:layout_width="wrap_content"
@@ -18,7 +19,7 @@
 		<android.support.design.widget.TextInputEditText
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:hint="请输入楼层数"
+			android:hint="楼层数"
 			android:digits="0123456789"
 			android:inputType="number"
 			android:ems="5"

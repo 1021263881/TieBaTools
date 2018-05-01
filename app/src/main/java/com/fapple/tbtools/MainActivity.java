@@ -18,6 +18,7 @@ import com.fapple.tools.*;
 import java.util.*;
 import org.json.*;
 
+import android.support.v7.widget.CardView;
 import android.content.ClipboardManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -87,8 +88,10 @@ public class MainActivity extends AppCompatActivity
 
 	//添加规则界面
 
-	private String[] rangeStrings = {"大于或等于[≥]", "小于或等于[≤]"};
+	private static String[] rangeStrings = {"大于或等于[≥]", "小于或等于[≤]"};
 	private ArrayAdapter<String> rangeAdapter = null;
+	private static String[] deleteStrings = {"不删除", "删除", "删除其所在楼层(针对楼中楼广告)", "删除其所在帖(针对楼中楼和2楼广告"};
+	private ArrayAdapter<String> deleteAdapter = null;
 
 	//LogView
 	private View logView = null;
@@ -157,32 +160,25 @@ public class MainActivity extends AppCompatActivity
 		//主页内容的Layout
 		mainContentLayout = (FrameLayout) findViewById(R.id.maincontentLayout);
 		mainContentLayout.addView(getHomeView());
+		((Switch)findViewById(R.id.homeviewShanTieJiSwitch)).setOnTouchListener(new OnTouchListener(){
+
+				@Override
+				public boolean onTouch(View p1, MotionEvent p2)
+				{
+					Snackbar.make(mainContentLayout, "点什么点", 0).show();
+					return true;
+				}
+			});
 
 		currentMenuItemID = R.id.menu_home;
 
-		fab = (FloatingActionButton)findViewById(R.id.fab);
-		fab.hide();
-		ruleClickListen = new OnClickListener(){
-			@Override
-			public void onClick(View p1)
-			{
-				Snackbar.make(mainContentLayout, "点击", 0).show();
-			}
-		};
-		logClickListen = new OnClickListener(){
-			@Override
-			public void onClick(View p1)
-			{
-				db.clearLog();
-				log.setText("");
-			}
-		};
-
 		//建立适配器
-		rangeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rangeStrings);
+		rangeAdapter = new ArrayAdapter<String>(this, R.layout.spinneritems, rangeStrings);
+		deleteAdapter = new ArrayAdapter< String>(this, R.layout.spinneritems, deleteStrings);
 
 		db.getWritableDatabase();
 
+		initFloatingActionButton();
 		initSetting();
 		initToolBar();
 		initNavigationView();
@@ -196,11 +192,11 @@ public class MainActivity extends AppCompatActivity
 		//db.clearLog();
 		BDUSS = db.getBDUSS("580978555");
 		try {
-			//api.sendLoginMess(BDUSS);
+			showAlertDialog(api.sendLoginMess(BDUSS));
 			//showAlertDialog(db.getLog());
 			//showAlertDialog(db.getBDUSS());
 			//showAlertDialog(api.deltz(BDUSS, 0, "我的世界", "5643840652"));
-			showAlertDialog("Res=" + api.send(BDUSS));
+			//showAlertDialog("Res=" + api.send(BDUSS));
 			if (false) {
 				uid = Zhengze.ZZ(api.sendLoginMess(""), "id\":\"\\d*?\"", false, 0);
 				uid = uid.substring(5, uid.length() - 1);
@@ -214,6 +210,61 @@ public class MainActivity extends AppCompatActivity
 		timer.schedule(task, 5000, 10000);
 	}
 
+	//初始化
+	private void initFloatingActionButton()
+	{
+		fab = (FloatingActionButton)findViewById(R.id.fab);
+		fab.hide();
+		ruleClickListen = new OnClickListener(){
+			@Override
+			public void onClick(View p1)
+			{
+				final View addRule = View.inflate(MainActivity.this, R.layout.rule_edit, null);
+				((Spinner)addRule.findViewById(R.id.ruleeditDeleteSpinner)).setAdapter(deleteAdapter);
+				AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+				dialog.setTitle("添加规则");
+				dialog.setIcon(R.drawable.ic_add_);
+				dialog.setPositiveButton("确定", new DialogInterface.OnClickListener(){
+
+						@Override
+						public void onClick(DialogInterface p1, int p2)
+						{
+							addRule(((TextInputEditText)addRule.findViewById(R.id.ruleeditNameEditText)).getText().toString(),
+									((Spinner)addRule.findViewById(R.id.ruleeditDeleteSpinner)).getSelectedItemPosition(),
+									((CheckBox)addRule.findViewById(R.id.ruleeditBanCheckBox)).isChecked(),
+									((TextInputEditText)addRule.findViewById(R.id.ruleeditBanReasonEditText)).getText().toString(),
+									((CheckBox)addRule.findViewById(R.id.ruleeditAddToBlackListCheckBox)).isChecked(),
+									((CheckBox)addRule.findViewById(R.id.ruleeditNeedCheckBox)).isChecked(),
+									null);
+						}
+					});
+				dialog.setNegativeButton("取消", null);
+				dialog.setCancelable(false);
+				dialog.setView(addRule);
+				dialog.show().getButton(AlertDialog.BUTTON_POSITIVE).setOnTouchListener(new OnTouchListener(){
+
+						@Override
+						public boolean onTouch(View p1, MotionEvent p2)
+						{
+							if (((CheckBox)addRule.findViewById(R.id.ruleeditBanCheckBox)).isChecked() && ((TextInputEditText)addRule.findViewById(R.id.ruleeditBanReasonEditText)).getText().length() < 1 && p2.getAction() == MotionEvent.ACTION_DOWN) {
+								Toast.makeText(MainActivity.this, "封禁理由不能为空", 0).show();
+								return true;
+							} else {
+								return false;
+							}
+						}
+					});
+			}
+		};
+		logClickListen = new OnClickListener(){
+			@Override
+			public void onClick(View p1)
+			{
+				db.clearLog();
+				log.setText("");
+			}
+		};
+	}
 	private void initInternetLitsen()
 	{
 		IntentFilter filter = new IntentFilter();
@@ -256,6 +307,7 @@ public class MainActivity extends AppCompatActivity
 				showUpdateMess();
 			}
 			lastTime = setting.optString("lastTime");
+			lastTime = lastTime.equals("") ?"0": lastTime;
 			rule = setting.optJSONArray("rule");
 			scanRule = rule.optJSONObject(0);
 			scanThread = scanRule.optBoolean("scanThread", scanThread);
@@ -291,11 +343,11 @@ public class MainActivity extends AppCompatActivity
 		setSupportActionBar(toolbar);
 		titleColorSpan = new ForegroundColorSpan(getColor(R.color.mdwhite));
 		setTitle("222");
-		setSubtitle("33");
+		setSubtitle("");
 
 		//从Resources()获取menu图标，修改大小
-		Drawable da = getResources().getDrawable(R.drawable.ic_menu);
-		da = zoomDrawable(da, (int)(24 * dpp), (int)(24 * dpp));
+		//Drawable da = getResources().getDrawable(R.drawable.ic_menu);
+		//da = zoomDrawable(da, (int)(24 * dpp), (int)(24 * dpp));
 
 		//设置导航按钮图片
 		toolbar.setNavigationIcon(R.drawable.ic_menu);
@@ -310,7 +362,7 @@ public class MainActivity extends AppCompatActivity
 				@Override
 				public void onClick(View p1)
 				{
-					Toast.makeText(MainActivity.this, "点击", 0).show();
+					//Toast.makeText(MainActivity.this, "点击", 0).show();
 					draw.openDrawer(Gravity.START);
 				}
 			});
@@ -382,8 +434,8 @@ public class MainActivity extends AppCompatActivity
 								fab.show();
 								break;
 							case R.id.menu_setting:
-								
-								mainContentLayout.addView(View.inflate(MainActivity.this, R.layout.rule_add_ctime, null));
+
+								mainContentLayout.addView(View.inflate(MainActivity.this, R.layout.rule_add_floor, null));
 								((Spinner)findViewById(R.id.ruleaddSpinner)).setAdapter(rangeAdapter);
 								break;
 							case R.id.menu_exit:
@@ -412,20 +464,103 @@ public class MainActivity extends AppCompatActivity
 
 
 
-	private void addNewRule(String name, boolean check, JSONArray rule)
+	class ruleCardHolder
 	{
+		public CardView card = null;
+		public int index = -1;
+		public Switch useSwitch = null;
+		public TextView nameText = null;
+		public TextView needCheckText = null;
+		public TextView matchTimesText = null;
+		public TextView dealText = null;
+		public LinearLayout condLayout = null;
+		public ImageButton addCondButton = null;
+		public ImageButton editButton = null;
+		public ImageButton deleteButton = null;
+	}
+	private void addRule(String name, int deleteType, boolean needBan, String banReason, boolean addToBlackList, boolean needCheck, JSONArray cond)
+	{
+		Toast.makeText(this, "addRule-" + Tool.currentToStrTime(System.currentTimeMillis()), 0).show();
+		if (needBan && banReason != null && banReason.length() < 1) {
+			showAlertDialog("规则添加失败，封禁理由不能为空");
+			return ;
+		}
+		int len = rule.length();
 		try {
 			this.rule.put(new JSONObject()
-						  .put("index", this.rule.length())
+						  .put("index", len)
 						  .put("name", name)
-						  .put("check", check)
-						  .put("using", true)
-						  .put("rule" , rule)
+						  .put("deleteType", deleteType)
+						  .put("needBan", needBan)
+						  .put("banReason", banReason)
+						  .put("addToBlackList", addToBlackList)
+						  .put("check", needCheck)
+						  .put("use", true)
+						  .put("cond" , cond)
 						  .put("matchTimes", new Integer(0))
 						  );
 		} catch (JSONException e) {
 			showAlertDialog("add-Exception=" + e.toString());
+			return ;
 		}
+		addRuleCard(len, name, 0, deleteType, needBan, banReason, addToBlackList, needCheck, cond);
+	}
+	private void addRuleCard(int index, String name, int matchTimes, int deleteType, boolean needBan, String banReason, boolean addToBlackList, boolean needCheck, JSONArray cond)
+	{
+		View newRule = View.inflate(this, R.layout.rule_cardview, null);
+		final ruleCardHolder holder = new ruleCardHolder();
+		holder.index = index;
+		holder.useSwitch = (Switch) newRule.findViewById(R.id.ruleSwitch);
+		holder.nameText = (TextView) newRule.findViewById(R.id.ruleNameText);
+		holder.needCheckText = (TextView) newRule.findViewById(R.id.ruleNeedCheckText);
+		holder.matchTimesText = (TextView) newRule.findViewById(R.id.ruleMatchTimesText);
+		holder.dealText = (TextView) newRule.findViewById(R.id.ruleDealText);
+		holder.condLayout = (LinearLayout) newRule.findViewById(R.id.ruleCondLayout);
+		holder.addCondButton = (ImageButton) newRule.findViewById(R.id.ruleAddCondButton);
+		holder.editButton = (ImageButton) newRule.findViewById(R.id.ruleEditButton);
+		holder.deleteButton = (ImageButton) newRule.findViewById(R.id.ruleDeleteButton);
+
+		holder.useSwitch.setChecked(true);
+		holder.nameText.setText(name);
+		if (needCheck) {
+			holder.needCheckText.setVisibility(View.VISIBLE);
+		} else {
+			holder.needCheckText.setVisibility(View.INVISIBLE);	
+		}
+		holder.matchTimesText.setText(String.valueOf(matchTimes));
+		holder.dealText.setText(deleteStrings[deleteType] + (needBan ?",封禁一天": "") + (addToBlackList ?",加入黑名单": ""));
+
+		holder.useSwitch.setse
+		holder.addCondButton.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					// TODO: Implement this method
+				}
+			});
+		holder.editButton.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					// TODO: Implement this method
+				}
+			});
+		holder.deleteButton.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					rule.remove(holder.index);
+					ruleContentView.removeView(holder.card);
+				}
+			});
+			
+		holder.card = (CardView) newRule;
+
+		newRule.setTag(holder);
+		ruleContentView.addView(newRule);
 	}
 
 	private void addRuleFloor(final int ruleIndex)
@@ -724,7 +859,7 @@ public class MainActivity extends AppCompatActivity
 		unregisterReceiver(networkChangeReceiver);
 		saveSetting();
 		Toast.makeText(this, "onDestory", 1).show();
-		//super.onDestroy();
+		super.onDestroy();
 	}
 
 	class NetworkChangeReceiver extends BroadcastReceiver

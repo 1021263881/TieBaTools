@@ -88,6 +88,10 @@ public abstract class TBScan
 
 	private String ltime = "";
 
+	public abstract void scan();
+	
+	public abstract void finish();
+	
 	public abstract void deleteThread(int ruleIndex, String ruleName, boolean needCheck, String fid, String tiebaName, String tid);
 
 	public abstract void deleteFloor(int ruleIndex, String ruleName, boolean needCheck);
